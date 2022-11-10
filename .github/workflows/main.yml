@@ -27,13 +27,13 @@ jobs:
     - name: Step 03 - CheckOut GitHub Repo
       uses: actions/checkout@v1
 
-    # - name: Step 04 - Set AWS Account
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-session-token    : ${{ secrets.AWS_SESSION_TOKEN }}
-    #     aws-region           : us-east-1
+    - name: Step 04 - Set AWS Account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token    : ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region           : us-east-1
 
      - name: Step 05 - Terraform Init
        run : terraform -chdir=./terraform init -input=false
