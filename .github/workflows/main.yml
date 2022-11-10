@@ -21,8 +21,8 @@ jobs:
         unzip terraform_"$tf_version"_linux_amd64.zip
         sudo mv terraform /usr/local/bin/
 
-    - #name: Step 02 - Terraform Version
-      # run : terraform --version
+    #- name: Step 02 - Terraform Version
+      #run : terraform --version
 
     - name: Step 03 - CheckOut GitHub Repo
       uses: actions/checkout@v1
@@ -50,4 +50,3 @@ jobs:
 
 #    - name: Step 09 - Terraform Show
       #run : terraform -chdir=./terraform show
-      
