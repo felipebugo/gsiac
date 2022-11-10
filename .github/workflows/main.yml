@@ -35,8 +35,8 @@ jobs:
     #     aws-session-token    : ${{ secrets.AWS_SESSION_TOKEN }}
     #     aws-region           : us-east-1
 
-    #  - name: Step 05 - Terraform Init
-    #    run : terraform -chdir=./terraform init -input=false
+     - name: Step 05 - Terraform Init
+       run : terraform -chdir=./terraform init -input=false
 
     #- name: Step 06 - Terraform Validate
       #run : terraform -chdir=./terraform validate
