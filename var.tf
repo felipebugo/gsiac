@@ -59,3 +59,4 @@ variable "rds_password" {
   type    = string
   default = "challenge123"
 }
+
