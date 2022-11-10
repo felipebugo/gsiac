@@ -1,6 +1,6 @@
 variable "vpc_id" {}
 
-#ELB
+#Load Balancer
 
 variable "protocol" {
   type = string
@@ -18,15 +18,6 @@ variable "sn_vpc_dev_pub_1b_id" {}
 
 variable "vpc_dev_security_group_pub_id" {}
 
-#Launch template
-variable "rds_endpoint" {}
-
-variable "rds_user" {}
-
-variable "rds_password" {}
-
-variable "rds_name" {}
-
 
 variable "ami" {
   type    = string
@@ -43,7 +34,7 @@ variable "ssh_key" {
   default = "vockey"
 }
 
-#ASG
+#Auto Scaling
 variable "desired_capacity" {
   type    = number
   default = 2
