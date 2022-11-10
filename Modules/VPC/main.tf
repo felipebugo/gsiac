@@ -1,4 +1,3 @@
-
 #Create VPC
 
 resource "aws_vpc" "vpc_dev" {
@@ -13,8 +12,6 @@ resource "aws_vpc" "vpc_dev" {
 
 
 
-
-
 #Create IGW
 resource "aws_internet_gateway" "igw_vpc_dev" {
   vpc_id = aws_vpc.vpc_dev.id
@@ -25,10 +22,7 @@ resource "aws_internet_gateway" "igw_vpc_dev" {
 }
 
 
-
-
-
-#Create Table Routing Public
+#Create Route Table Pub
 
 resource "aws_route_table" "vpc_dev_route_table_pub" {
     vpc_id = aws_vpc.vpc_dev.id
@@ -43,7 +37,7 @@ resource "aws_route_table" "vpc_dev_route_table_pub" {
     }
 }
 
-#Create Table Routing Private
+#Create Route Table Priv
 
 resource "aws_route_table" "vpc_dev_route_table_priv" {
     vpc_id = aws_vpc.vpc_dev.id
@@ -57,7 +51,7 @@ resource "aws_route_table" "vpc_dev_route_table_priv" {
 
 
 
-#Create Table Routing Public US-EAST-1A
+#Create Subnet Public US-EAST-1A
 
 resource "aws_subnet" "sn_vpc_dev_pub_1a" {
   vpc_id                  = aws_vpc.vpc_dev.id
@@ -70,7 +64,7 @@ resource "aws_subnet" "sn_vpc_dev_pub_1a" {
   }
 }
 
-#Association Subnet Public 1A
+#Associate Subnet Pub 1A
 resource "aws_route_table_association" "association_pub_1a" {
   subnet_id      = aws_subnet.sn_vpc_dev_pub_1a.id
   route_table_id = aws_route_table.vpc_dev_route_table_pub.id
@@ -80,7 +74,7 @@ resource "aws_route_table_association" "association_pub_1a" {
 
 
 
-#Create Table Routing Public US-EAST-1B
+#Create Subnet Pub US-EAST-1B
 
 resource "aws_subnet" "sn_vpc_dev_pub_1b" {
   vpc_id                  = aws_vpc.vpc_dev.id
@@ -93,7 +87,7 @@ resource "aws_subnet" "sn_vpc_dev_pub_1b" {
   }
 }
 
-#Association Subnet Public 1B
+#Associate Subnet Pub 1B
 resource "aws_route_table_association" "association_pub_1b" {
   subnet_id      = aws_subnet.sn_vpc_dev_pub_1b.id
   route_table_id = aws_route_table.vpc_dev_route_table_pub.id
@@ -103,7 +97,7 @@ resource "aws_route_table_association" "association_pub_1b" {
 
 
 
-#Create Table Routing Private US-EAST-1A
+#Create Subnet Pub US-EAST-1A
 
 resource "aws_subnet" "sn_vpc_dev_priv_1a" {
   vpc_id                  = aws_vpc.vpc_dev.id
@@ -115,7 +109,7 @@ resource "aws_subnet" "sn_vpc_dev_priv_1a" {
   }
 }
 
-#Association Subnet Private 1A
+#Associate Subnet Priv 1A
 resource "aws_route_table_association" "association_priv_1a" {
   subnet_id      = aws_subnet.sn_vpc_dev_priv_1a.id
   route_table_id = aws_route_table.vpc_dev_route_table_priv.id
@@ -123,9 +117,27 @@ resource "aws_route_table_association" "association_priv_1a" {
 
 
 
+resource "aws_subnet" "sn_vpc_dev_priv_2a" {
+  vpc_id                  = aws_vpc.vpc_dev.id
+  cidr_block              = "${var.sn_vpc_dev_priv_2a_cidr}"
+  availability_zone       = "us-east-1a"
+
+  tags = {
+    "Name" = "sn_vpc_dev_priv_2a"
+  }
+}
+
+#Associate Subnet Priv 2A
+resource "aws_route_table_association" "association_priv_2a" {
+  subnet_id      = aws_subnet.sn_vpc_dev_priv_2a.id
+  route_table_id = aws_route_table.vpc_dev_route_table_priv.id
+}
 
 
-#Create Table Routing Private US-EAST-1B
+
+
+
+#Create Subnet Priv US-EAST-1B
 
 resource "aws_subnet" "sn_vpc_dev_priv_1b" {
   vpc_id                  = aws_vpc.vpc_dev.id
@@ -137,17 +149,32 @@ resource "aws_subnet" "sn_vpc_dev_priv_1b" {
   }
 }
 
-#Association Subnet Private 1B
+#Associate Subnet Priv 1B
 resource "aws_route_table_association" "association_priv_1b" {
   subnet_id      = aws_subnet.sn_vpc_dev_priv_1b.id
   route_table_id = aws_route_table.vpc_dev_route_table_priv.id
 }
 
 
+resource "aws_subnet" "sn_vpc_dev_priv_2b" {
+  vpc_id                  = aws_vpc.vpc_dev.id
+  cidr_block              = "${var.sn_vpc_dev_priv_2b_cidr}"
+  availability_zone       = "us-east-1b"
+
+  tags = {
+    "Name" = "sn_vpc_dev_priv_2b"
+  }
+}
+
+#Associate Subnet Priv 1B
+resource "aws_route_table_association" "association_priv_2b" {
+  subnet_id      = aws_subnet.sn_vpc_dev_priv_2b.id
+  route_table_id = aws_route_table.vpc_dev_route_table_priv.id
+}
 
 
 
-#Create Security Group Public
+#Create Security Group Pub
 
 resource "aws_security_group" "vpc_dev_security_group_pub" {
   name        = "vpc_dev_security_group_pub"
@@ -192,7 +219,7 @@ resource "aws_security_group" "vpc_dev_security_group_pub" {
 }
 
 
-#Create Security Group Private
+#Security Group Priv
 
 resource "aws_security_group" "vpc_dev_security_group_priv" {
   name        = "vpc_dev_security_group_priv"
@@ -201,18 +228,35 @@ resource "aws_security_group" "vpc_dev_security_group_priv" {
 
   ingress {
       description = "All from 10.0.0.0/16"
-      from_port   = 3306
-      to_port     = 3306
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  ingress {
+      description = "TCP/22 from 10.0.0.0/16"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/16"]
+  }
+
+
+  ingress {
+      description = "TCP/80 from 10.0.0.0/16"
+      from_port   = 80
+      to_port     = 80
       protocol    = "tcp"
       cidr_blocks = ["10.0.0.0/16"]
   }
 
   egress {
-      description = "All to all"
+      description = "All to 10.0.0.0/16"
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = ["10.0.0.0/16"]
   }
 
 }
