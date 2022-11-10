@@ -12,14 +12,14 @@ jobs:
  
     steps:
 
-    - name: Step 01 - Terraform Install
-      env :
-        TERRAFORM_VERSION: "1.3.1"
-      run : |
-        tf_version=$TERRAFORM_VERSION
-        wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
-        unzip terraform_"$tf_version"_linux_amd64.zip
-        sudo mv terraform /usr/local/bin/
+    # - name: Step 01 - Terraform Install
+    #   env :
+    #     TERRAFORM_VERSION: "1.3.1"
+    #   run : |
+    #     tf_version=$TERRAFORM_VERSION
+    #     wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
+    #     unzip terraform_"$tf_version"_linux_amd64.zip
+    #     sudo mv terraform /usr/local/bin/
 
     #- name: Step 02 - Terraform Version
       #run : terraform --version
@@ -35,8 +35,8 @@ jobs:
     #     aws-session-token    : ${{ secrets.AWS_SESSION_TOKEN }}
     #     aws-region           : us-east-1
 
-     - name: Step 05 - Terraform Init
-       run : terraform -chdir=./terraform init -input=false
+    #  - name: Step 05 - Terraform Init
+    #    run : terraform -chdir=./terraform init -input=false
 
     #- name: Step 06 - Terraform Validate
       #run : terraform -chdir=./terraform validate
